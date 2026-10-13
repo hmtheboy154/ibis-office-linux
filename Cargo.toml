@@ -23,8 +23,15 @@ gpui-kit = "=0.6.6"
 # Window::paint_glyph_transformed for rotated text and more; gpui-pre-macos and
 # gpui-pre-web fix text on macOS and in the browser (full-width Japanese
 # symbols). They are git submodules under forks/; see AGENTS.md.
+#
+# gpui-pre-wgpu (the wgpu renderer and the text system gpui-pre-linux draws
+# with) is the crates.io crate as it is published, with one addition: its text
+# system answers PlatformTextSystem::font_data, which a PDF's embedded fonts
+# and a Word document's pair kerning need. Its first commit is that crate as
+# it is published, the second the change.
 [patch.crates-io]
 gpui-pre = { path = "forks/gpui-pre" }
 gpui-pre-macos = { path = "forks/gpui-pre-macos" }
 gpui-pre-web = { path = "forks/gpui-pre-web" }
+gpui-pre-wgpu = { path = "forks/gpui-pre-wgpu" }
 gpui-pre-windows = { path = "forks/gpui-pre-windows" }

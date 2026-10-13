@@ -1136,9 +1136,9 @@ impl SlideEditor {
         // Where the pages break: a dashed blue line at an automatic break, a
         // solid one at a manual break, and the page's number in grey.
         // (The pages come from the exporter, which is not in every build: without it, no page lines.)
-        #[cfg(all(target_os = "macos", feature = "export"))]
+        #[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
         let (print_scale, pages) = crate::export::preview_pages(self.presentation(), self.slide(), &self.resources);
-        #[cfg(not(all(target_os = "macos", feature = "export")))]
+        #[cfg(not(all(feature = "export", any(target_os = "macos", target_os = "linux"))))]
         let (print_scale, pages): (f64, Vec<ibis_doc_model::EmuRect>) = (1.0, Vec::new());
         let (xs, ys) = (sheet.column_offsets(), sheet.row_offsets());
         let manual_x: Vec<i64> = sheet.print.column_breaks.iter().filter_map(|b| xs.get(*b as usize)).map(|x| frame.x + x).collect();

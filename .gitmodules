@@ -7,6 +7,9 @@
 [submodule "forks/gpui-pre-web"]
 	path = forks/gpui-pre-web
 	url = https://github.com/ibisjp/gpui-pre-web.git
+[submodule "forks/gpui-pre-wgpu"]
+	path = forks/gpui-pre-wgpu
+	url = git@github.com:hmtheboy154/gpui-pre-wgpu.git
 [submodule "forks/gpui-pre-windows"]
 	path = forks/gpui-pre-windows
 	url = https://github.com/ibisjp/gpui-pre-windows.git

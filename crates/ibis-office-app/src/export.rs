@@ -460,6 +460,13 @@ pub fn export(mut presentation: Presentation, options: &Options) -> Result<(), S
     // macOS and Office draw text there).
     #[cfg(target_os = "macos")]
     gpui_macos::set_font_smoothing(false);
+    // A picture of a page needs the platform's headless renderer (what paints
+    // it); the vector PDF is written from what the window recorded, and needs
+    // none. Linux, where the app draws with wgpu, has no headless renderer:
+    // say so here rather than after laying the whole document out.
+    if options.format != Format::Pdf && headless_renderer().is_none() {
+        return Err("this platform cannot draw pages as pictures (--export png, pdf-image); it writes them as a vector PDF (--export pdf)".into());
+    }
     let mut lap_at = crate::clock::Instant::now();
     let (_platform, mut cx) = headless_app();
     lap("headless app", &mut lap_at);

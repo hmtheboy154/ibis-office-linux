@@ -9,7 +9,7 @@
 /// in `data` (the `index`th of a collection) at `size` pixels, from its
 /// origin on the baseline, y down. `None` when the outline cannot be read
 /// (and where the font files cannot be read: the web build).
-#[cfg(all(target_os = "macos", feature = "export"))]
+#[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
 pub(crate) fn glyph_polygons(data: &[u8], index: u32, glyph: u32, size: f32) -> Option<Vec<Vec<(f32, f32)>>> {
     use skrifa::MetadataProvider as _;
     use skrifa::instance::{LocationRef, Size};
@@ -23,21 +23,21 @@ pub(crate) fn glyph_polygons(data: &[u8], index: u32, glyph: u32, size: f32) -> 
     Some(pen.contours)
 }
 
-#[cfg(not(all(target_os = "macos", feature = "export")))]
+#[cfg(not(all(feature = "export", any(target_os = "macos", target_os = "linux"))))]
 pub(crate) fn glyph_polygons(_data: &[u8], _index: u32, _glyph: u32, _size: f32) -> Option<Vec<Vec<(f32, f32)>>> {
     None
 }
 
 /// Collects a glyph's contours as polygons, curves cut into short lines,
 /// y turned down.
-#[cfg(all(target_os = "macos", feature = "export"))]
+#[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
 #[derive(Default)]
 struct Flatten {
     contours: Vec<Vec<(f32, f32)>>,
     current: Vec<(f32, f32)>,
 }
 
-#[cfg(all(target_os = "macos", feature = "export"))]
+#[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
 impl Flatten {
     fn close_contour(&mut self) {
         if self.current.len() >= 3 {
@@ -53,10 +53,10 @@ impl Flatten {
 }
 
 /// Lines a curve is cut into.
-#[cfg(all(target_os = "macos", feature = "export"))]
+#[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
 const STEPS: usize = 8;
 
-#[cfg(all(target_os = "macos", feature = "export"))]
+#[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
 impl skrifa::outline::OutlinePen for Flatten {
     fn move_to(&mut self, x: f32, y: f32) {
         self.close_contour();

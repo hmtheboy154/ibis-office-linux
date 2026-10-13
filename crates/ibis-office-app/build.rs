@@ -7,8 +7,8 @@
 //! On Windows it also gives the executable the app icon (see `windows_icon`).
 //!
 //! It also sets `cfg(headless_export)` where the export (`--export`) is
-//! built: with the `export` feature, on macOS and Windows, where GPUI draws
-//! without a window.
+//! built: with the `export` feature, on macOS, Windows and Linux, where GPUI
+//! draws without a window.
 
 use std::fmt::Write as _;
 use std::path::Path;
@@ -41,7 +41,7 @@ fn main() {
     let target = |name: &str| std::env::var(name).unwrap_or_default();
     let os = target("CARGO_CFG_TARGET_OS");
     println!("cargo::rustc-check-cfg=cfg(headless_export)");
-    if std::env::var_os("CARGO_FEATURE_EXPORT").is_some() && (os == "macos" || os == "windows") {
+    if std::env::var_os("CARGO_FEATURE_EXPORT").is_some() && matches!(os.as_str(), "macos" | "windows" | "linux") {
         println!("cargo::rustc-cfg=headless_export");
     }
 
