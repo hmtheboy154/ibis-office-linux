@@ -63,6 +63,7 @@ fn app_version() {
     let platform = match (target("CARGO_CFG_TARGET_OS").as_str(), target("CARGO_CFG_TARGET_FAMILY").as_str()) {
         ("windows", _) => "Windows",
         ("macos", _) => "macOS",
+        ("linux", _) => "Linux",
         (_, "wasm") => "wasm",
         (os, _) => panic!("version.txt has no line for {os}"),
     };

@@ -27,10 +27,21 @@ log = "0.4"
 # font's kern table and GPOS pair adjustments.
 harfrust = "=0.5.2"
 
-# For the `export` feature: GPUI's headless renderer is part of its test
-# support, which also turns on GPUI's entity leak tracking (a small cost).
-[target.'cfg(any(target_os = "macos", windows))'.dependencies]
+# Everything the app builds into itself rather than what the browser has.
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+# For the `export` feature: the headless app context the export draws in is
+# part of GPUI's test support, which also turns on GPUI's entity leak
+# tracking (a small cost). The headless *renderer* (what paints a page's
+# pixels) is a part of it that exists only on macOS and Windows: on Linux,
+# where the app draws with wgpu, `--export png` and `--export pdf-image` have
+# none to draw with, and `--export pdf` writes the pages as vectors.
 gpui-pre-platform = { version = "=0.3.6", features = ["test-support"], optional = true }
+# Automatic update (shell/update.rs): the log, paths and versions it shares with ibisOfficeUpdater.
+ibis-office-updater = { path = "../ibis-office-updater" }
+# The picture codecs (PNG, GIF, JPEG) the picture compression
+# (pptx/compress.rs) and the GIF export (shell/file_actions.rs) need
+# wherever the app runs in a window. The `export` feature turns them on;
+# the browser decodes pictures through its own codecs instead.
 image = { version = "0.25", default-features = false, features = ["png", "gif", "jpeg"], optional = true }
 miniz_oxide = { version = "0.8", optional = true }
 # Vector PDF export: pages as text, paths and images (MIT OR Apache-2.0).
@@ -44,10 +55,6 @@ skrifa = { version = "=0.42.1", optional = true }
 # Trying each font's subset before the PDF is written (the version krilla
 # uses; MIT OR Apache-2.0): a font it cannot subset is drawn as outlines.
 subsetter = { version = "=0.2.6", optional = true }
-
-# Automatic update (shell/update.rs): the log, paths and versions it shares with ibisOfficeUpdater.
-[target.'cfg(not(target_family = "wasm"))'.dependencies]
-ibis-office-updater = { path = "../ibis-office-updater" }
 
 # macOS only.
 [target.'cfg(target_os = "macos")'.dependencies]
@@ -74,8 +81,9 @@ default = ["export"]
 # The scenario tests' driver (`src/shell/scenario.rs`), for tests/scenarios.rs;
 # turned on for this crate's own tests by the dev-dependency below.
 scenarios = ["export"]
-# `--export png|pdf|pdf-image|ui` on the command line (macOS and Windows;
-# build.rs sets `cfg(headless_export)` for it).
+# `--export png|pdf|pdf-image|ui` on the command line (macOS, Windows and
+# Linux; build.rs sets `cfg(headless_export)` for it). Linux writes PDFs as
+# vectors only: it has no headless renderer yet (see above).
 export = ["dep:gpui-pre-platform", "dep:gpui-pre-windows", "dep:image", "dep:miniz_oxide", "dep:krilla", "dep:skrifa", "dep:subsetter", "dep:gpui-pre-macos"]
 
 [target.'cfg(target_family = "wasm")'.dependencies]
