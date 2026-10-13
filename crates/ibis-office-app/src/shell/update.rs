@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright (c) ibis inc.
 // Additional terms under AGPL-3.0 section 7(b): see NOTICE.
-//! Automatic update (todo-fix #35; macOS and Windows).
+//! Automatic update (todo-fix #35; macOS and Windows, and Linux where the
+//! app is installed in a folder of its own — an AppImage is mounted read-only
+//! and cannot be swapped, so the app offers the download page instead).
 //!
 //! At startup (ツール > 設定… > 起動時に更新を確かめる, on unless turned off) a
 //! background task reads version.txt on GitHub. If this platform's version
@@ -18,14 +20,18 @@
 //!   --strict`, `spctl -a -t exec`) before anything in it is run.
 //! - Windows (no code signature yet): the zip's SHA-256 must equal the one in
 //!   the `.sha256` file beside it on the Releases page.
+//! - Linux: the executable in `$PREFIX/bin` is replaced, like on Windows.
 //! - Not done: from a build run out of `target/`, from a folder the user
 //!   cannot write to, or from macOS's App Translocation (the log says which,
 //!   and a window asks to install it again by hand).
 //! - Two attempts at one version that did not end in that version running
 //!   stop the offers (a window says so once).
 //!
-//! Every step goes to `updater.log` (`ibis_office_updater::log`). Downloading
-//! and unpacking use the system's `curl` and `ditto` (`tar` on Windows).
+//! Every step goes to `updater.log` (`ibis_office_updater::log`, which is
+//! where the desktop expects it: `~/Library/Logs` on macOS,
+//! `%LOCALAPPDATA%` on Windows, `$XDG_STATE_HOME` on Linux). Downloading
+//! and unpacking use the system's `curl` and `ditto` (`tar` on Windows and
+//! Linux).
 //! For the tests: `IBIS_UPDATE_URL_BASE` replaces the GitHub addresses,
 //! `IBIS_UPDATE_DIR` the folders of the files, `IBIS_UPDATE_AUTO_YES=1`
 //! answers 「はい」, and `IBIS_UPDATE_SKIP_SIGNATURE=1` skips the signature

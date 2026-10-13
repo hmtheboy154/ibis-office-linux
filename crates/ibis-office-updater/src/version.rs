@@ -2,10 +2,17 @@
 // Copyright (c) ibis inc.
 // Additional terms under AGPL-3.0 section 7(b): see NOTICE.
 //! version.txt: a platform, a tab and its version per line (`macOS<TAB>0.8.0`,
-//! `Windows<TAB>0.8.0`, `wasm<TAB>0.8.0`), and comparing versions.
+//! `Windows<TAB>0.8.0`, `Linux<TAB>0.8.0`, `wasm<TAB>0.8.0`), and comparing
+//! versions.
 
 /// This platform's name in version.txt and in the zip's file name.
-pub const PLATFORM: &str = if cfg!(target_os = "windows") { "Windows" } else { "macOS" };
+pub const PLATFORM: &str = if cfg!(target_os = "windows") {
+    "Windows"
+} else if cfg!(target_os = "linux") {
+    "Linux"
+} else {
+    "macOS"
+};
 
 /// `platform`'s version in the text of version.txt.
 pub fn find(text: &str, platform: &str) -> Option<String> {
@@ -40,11 +47,28 @@ mod tests {
 
     #[test]
     fn finds_the_platform() {
-        let text = "Windows\t0.8.1\r\nmacOS\t0.9.0\r\nwasm\t0.8.0\r\n";
+        let text = "Windows\t0.8.1\r\nmacOS\t0.9.0\r\nLinux\t0.8.2\r\nwasm\t0.8.0\r\n";
         assert_eq!(find(text, "macOS").as_deref(), Some("0.9.0"));
         assert_eq!(find(text, "Windows").as_deref(), Some("0.8.1"));
-        assert_eq!(find(text, "Linux"), None);
+        assert_eq!(find(text, "Linux").as_deref(), Some("0.8.2"));
+        assert_eq!(find(text, "FreeBSD"), None);
         assert_eq!(find("macOS\t../../etc\n", "macOS"), None);
+    }
+
+    /// A build asks for its own line, and the release's file is named after
+    /// it, so a Linux build never looks for (or downloads) a macOS app.
+    #[test]
+    fn the_platform_is_this_one() {
+        let text = "Windows\t0.8.1\r\nmacOS\t0.9.0\r\nLinux\t0.9.1\r\nwasm\t0.8.0\r\n";
+        let mine = find(text, PLATFORM).expect("a line for this platform");
+        let expected = if cfg!(target_os = "windows") {
+            "0.8.1"
+        } else if cfg!(target_os = "linux") {
+            "0.9.1"
+        } else {
+            "0.9.0"
+        };
+        assert_eq!(mine, expected);
     }
 
     #[test]

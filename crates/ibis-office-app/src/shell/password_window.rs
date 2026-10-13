@@ -40,7 +40,7 @@ fn open_window(view: impl FnOnce(&mut Window, &mut App) -> PasswordWindow, title
         Some(p) => Bounds::new(point(p.origin.x + (p.size.width - width) / 2.0, p.origin.y + (p.size.height - height) / 2.0), size(width, height)),
         None => Bounds::centered(None, size(width, height), cx),
     };
-    let options = WindowOptions { window_bounds: Some(WindowBounds::Windowed(bounds)), titlebar: Some(TitlebarOptions { title: Some(title), ..Default::default() }), ..Default::default() };
+    let options = WindowOptions { window_bounds: Some(WindowBounds::Windowed(bounds)), titlebar: Some(TitlebarOptions { title: Some(title), ..Default::default() }), ..crate::shell::platform::window_options() };
     let _ = cx.open_window(options, |window, cx| {
         let made = view(window, cx);
         let first = made.first.clone();

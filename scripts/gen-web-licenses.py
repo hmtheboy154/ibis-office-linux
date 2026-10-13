@@ -3,18 +3,21 @@
 # Copyright (c) ibis inc.
 # Additional terms under AGPL-3.0 section 7(b): see NOTICE.
 """Write the lists of third-party components shipped and the notices their
-licences require: www/license.md for the browser version, and
-crates/ibis-office-app/macos/license.md for the desktop app (copied into
-ibisOffice.app by scripts/bundle-macos.sh).
+licences require: www/license.md for the browser version,
+crates/ibis-office-app/macos/license.md for the macOS app (copied into
+ibisOffice.app by scripts/bundle-macos.sh), and
+crates/ibis-office-app/linux/license.md for the Linux app (installed into
+$PREFIX/share/doc/ibis-office by scripts/install-linux.sh).
 
-    scripts/gen-web-licenses.py          # both
+    scripts/gen-web-licenses.py          # all of them
     scripts/gen-web-licenses.py web      # www/license.md only
-    scripts/gen-web-licenses.py macos    # the desktop app's only
+    scripts/gen-web-licenses.py macos    # the desktop app's macOS one only
+    scripts/gen-web-licenses.py linux    # the desktop app's Linux one only
 
 Rust crates are those linked into each build (cargo tree for
-wasm32-unknown-unknown, and aarch64-apple-darwin); their copyright lines are
-taken from each crate's own licence files. Run it again after changing
-dependencies.
+wasm32-unknown-unknown, aarch64-apple-darwin and the host); their copyright
+lines are taken from each crate's own licence files. Run it again after
+changing dependencies.
 """
 import json
 import os
@@ -23,16 +26,28 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# Output, cargo target and name of each build.
-BUILDS = {
-    "web": (os.path.join(ROOT, "www", "license.md"), "wasm32-unknown-unknown", "Web 版"),
-    "macos": (os.path.join(ROOT, "crates", "ibis-office-app", "macos", "license.md"), "aarch64-apple-darwin", "macOS 版"),
-}
-OWN = {"ibis-office-app", "ibis-doc-model", "ibis-pptx", "ibis-emf", "ibis-eot", "ibis-imgdiff"}
 
 
 def run(*args):
     return subprocess.run(args, cwd=ROOT, check=True, capture_output=True, text=True).stdout
+
+
+def host_target():
+    """The triple this machine builds for (the Linux build's crates are the
+    host's, like the macOS build's are the Apple Silicon ones)."""
+    for line in run("rustc", "-vV").splitlines():
+        if line.startswith("host: "):
+            return line[len("host: "):].strip()
+    return "x86_64-unknown-linux-gnu"
+
+
+# Output, cargo target, label and where the build is installed, of each build.
+BUILDS = {
+    "web": (os.path.join(ROOT, "www", "license.md"), "wasm32-unknown-unknown", "Web 版", " Web 版（`www/`）"),
+    "macos": (os.path.join(ROOT, "crates", "ibis-office-app", "macos", "license.md"), "aarch64-apple-darwin", "macOS 版", " macOS 版（`ibisOffice.app`）"),
+    "linux": (os.path.join(ROOT, "crates", "ibis-office-app", "linux", "license.md"), host_target(), "Linux 版", " Linux 版（`/usr`）"),
+}
+OWN = {"ibis-office-app", "ibis-doc-model", "ibis-pptx", "ibis-emf", "ibis-eot", "ibis-imgdiff"}
 
 
 def crates(target):
@@ -103,7 +118,7 @@ def main():
 
 
 def write(build):
-    out_path, target, label = BUILDS[build]
+    out_path, target, label, where = BUILDS[build]
     packages = crates(target)
     licences = {}
     rows = []
@@ -210,10 +225,10 @@ def write(build):
     bundled.append(("Material Symbols（Google）", "タイトル行・メニュー・ツールバー・サイドバーのアイコン（実行ファイルに埋め込み）", "Apache-2.0"))
     material_readme = open(os.path.join(ROOT, "crates", "ibis-office-app", "icons", "material", "README.md"), encoding="utf-8").read()
     material_source = next((l[2:] for l in material_readme.splitlines() if l.startswith("- 出典")), "")
-    where = " Web 版（`www/`）" if build == "web" else " macOS 版（`ibisOffice.app`）"
+    where_ = where
     md = [f"# サードパーティのライセンス（{label}）",
           "",
-          f"ibisOffice の{where}に含まれる、ibisOffice 以外の部品と、そのライセンスが求める表示です。"
+          f"ibisOffice の{where_}に含まれる、ibisOffice 以外の部品と、そのライセンスが求める表示です。"
           "このファイルは `scripts/gen-web-licenses.py` で生成しています。",
           "",
           "## 同梱しているデータ・フォント・アイコン",

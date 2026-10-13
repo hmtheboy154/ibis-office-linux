@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SPDX-License-Identifier: AGPL-3.0-only
+  Copyright (c) ibis inc.
+  Additional terms under AGPL-3.0 section 7(b): see NOTICE.
+
+  The types of the documents ibisOffice opens, for desktops whose shared-mime-info
+  does not know them already (a bare container, say). Those that another package
+  defines with a higher priority keep their definition; this only fills in what
+  is missing, and gives each a glob to match a file by its name.
+
+  Installed to $PREFIX/share/mime/packages by scripts/install-linux.sh, which
+  runs update-mime-database over it.
+-->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+    <comment>Microsoft Word document</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.docx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.openxmlformats-officedocument.wordprocessingml.template">
+    <comment>Microsoft Word template</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.dotx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+    <comment>Microsoft Excel spreadsheet</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.xlsx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.openxmlformats-officedocument.spreadsheetml.template">
+    <comment>Microsoft Excel template</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.xltx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.openxmlformats-officedocument.presentationml.presentation">
+    <comment>Microsoft PowerPoint presentation</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.pptx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.openxmlformats-officedocument.presentationml.slideshow">
+    <comment>Microsoft PowerPoint slideshow</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.ppsx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.openxmlformats-officedocument.presentationml.template">
+    <comment>Microsoft PowerPoint template</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.potx"/>
+    <icon name="jp.ne.ibis.office"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.ms-word.document.macroEnabled.12">
+    <comment>Microsoft Word document (macros do not run)</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.docm"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.ms-excel.sheet.macroEnabled.12">
+    <comment>Microsoft Excel spreadsheet (macros do not run)</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.xlsm"/>
+    <priority>40</priority>
+  </mime-type>
+  <mime-type type="application/vnd.ms-powerpoint.presentation.macroEnabled.12">
+    <comment>Microsoft PowerPoint presentation (macros do not run)</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.pptm"/>
+    <priority>40</priority>
+  </mime-type>
+</mime-info>

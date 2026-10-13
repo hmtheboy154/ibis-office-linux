@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SPDX-License-Identifier: AGPL-3.0-only
+  Copyright (c) ibis inc.
+  Additional terms under AGPL-3.0 section 7(b): see NOTICE.
+
+  The AppStream data of ibisOffice: what software centres and the desktop's
+  "About" pages show for it. Installed to $PREFIX/share/metainfo by
+  scripts/install-linux.sh.
+-->
+<component type="desktop-application">
+  <id>jp.ne.ibis.office</id>
+  <metadata_license>AGPL-3.0-only</metadata_license>
+  <project_license>AGPL-3.0-only</project_license>
+  <name>ibisOffice</name>
+  <summary>Create and edit Word, Excel and PowerPoint documents</summary>
+  <summary xml:lang="ja">Word・Excel・PowerPoint の文書を作成・編集します</summary>
+  <description>
+    <p>
+      ibisOffice is an office suite for Word, Excel and PowerPoint documents. A
+      document made in Microsoft Office should look the same when you open it
+      here: line breaks, page breaks, table borders, even chart tick marks are
+      all built to produce the same result as Office.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Open, edit and save .docx, .xlsx and .pptx documents.</li>
+      <li>Word, Excel and PowerPoint editing, with the toolbars, panels and menus of each.</li>
+      <li>Export a document as a PDF.</li>
+      <li>Spell checking, colour palettes, comments and shape effects.</li>
+    </ul>
+  </description>
+  <categories>
+    <category>Office</category>
+  </categories>
+  <url type="homepage">https://ibis.jp/office/</url>
+  <url type="bugtracker">https://github.com/ibisjp/ibis-office/issues</url>
+  <launchable type="desktop-id">jp.ne.ibis.office.desktop</launchable>
+  <provides>
+    <binary>ibisOffice</binary>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.8.1" date="2026-10-12">
+      <description>
+        <p>See the CHANGELOG.md in the source tree.</p>
+      </description>
+    </release>
+  </releases>
+</component>

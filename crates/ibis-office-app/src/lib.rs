@@ -419,7 +419,7 @@ pub(crate) fn open_window_with(cx: &mut App, setup: impl FnOnce(&mut SlideEditor
             size(px(1280.), px(800.)),
             cx,
         ))),
-        ..Default::default()
+        ..crate::shell::platform::window_options()
     };
     cx.open_window(options, |window, cx| {
         let view = cx.new(|cx| {
@@ -827,6 +827,10 @@ pub fn run_native() {
     });
     application
         .run(move |cx| {
+            // The name the desktop shows this app by, before anything is
+            // shown by it (its notifications; on Linux the windows carry the
+            // same identity, see shell/platform.rs).
+            cx.set_app_identity(crate::shell::platform::APP_ID, crate::shell::platform::APP_NAME);
             {
                 let mut state = opener.borrow_mut();
                 state.0 = Some(cx.to_async());

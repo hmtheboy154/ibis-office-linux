@@ -46,14 +46,14 @@ pub(crate) mod notes_format;
 pub(crate) mod spelling_panel;
 pub(crate) mod morph;
 
-#[cfg(not(all(target_os = "macos", feature = "export")))]
+#[cfg(not(all(feature = "export", any(target_os = "macos", target_os = "linux"))))]
 impl crate::shell::editor::SlideEditor {
-    /// 図の圧縮 needs the picture codecs of the `export` feature (macOS).
+    /// 図の圧縮 needs the picture codecs of the `export` feature (macOS and Linux).
     pub(crate) fn compress_panel(&mut self, _cx: &mut gpui_kit::Context<Self>) -> Option<SidebarPanel> {
         None
     }
 }
-#[cfg(all(target_os = "macos", feature = "export"))]
+#[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
 pub(crate) mod compress;
 pub(crate) mod edit_points;
 pub(crate) mod modify_password;
@@ -100,7 +100,7 @@ pub(crate) struct State {
     /// スペルチェック panel, while open.
     pub(crate) spelling: Option<spelling_panel::SpellPanel>,
     /// 図の圧縮 panel, while open.
-    #[cfg(all(target_os = "macos", feature = "export"))]
+    #[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
     pub(crate) compress_panel: Option<compress::CompressPanel>,
     /// 頂点の編集: the shape whose vertices are shown.
     pub(crate) edit_points: Option<edit_points::EditPoints>,
@@ -231,7 +231,7 @@ pub(crate) struct SlidePopup {
 
 impl Default for State {
     fn default() -> Self {
-        Self { selection: Vec::new(), tool: editing::Tool::Select, drag: None, shift: false, clipboard: Vec::new(), clipboard_groups: Vec::new(), character_format_copy: None, paragraph_format_copy: None, animation_copy: None, find: None, replace_fonts: None, section_panel: None, layout_panel: None, print_panel: None, spelling: None, #[cfg(all(target_os = "macos", feature = "export"))] compress_panel: None, edit_points: None, path_draw: None, notes_marks_panel: None, print_settings: Default::default(), folded_sections: Default::default(), section_selection: None, size_panel: None, insets_panel: None, crop_panel: None, frame_panel: None, cell_size_panel: None, alt_text_panel: None, comments: None, chart_panel: None, chart_data: None, header_footer: None, animation_pane: false, animation_options_panel: None, selection_pane: None, reading_order_pane: None, link_panel: None, clips: Vec::new(), symbols: None, defaults: Default::default(), theme_panel: None, timing_panel: None, show_panel: None, glow_panel: None, shadow_panel: None, gradient_panel: None, paragraph_panel: None, clipboard_slide: None, pastes: 0, edit: None, positions: Default::default(), goal_x: None, pending_click: None, notes_field: None, notes_hidden: false, grid_view: false, outline_view: false, notes_page_view: false, gridlines: false, guides: false, snap_to_grid: false, snap_to_shape: false, slide_popup: None, read_only_dismissed: false, modify_unlocked: false, clipboard_stamp: None, slide_selection: Vec::new(), align_to_slide: false, properties_panel: None, inspect_panel: None, accessibility_panel: None, compatibility_panel: None, slide_zoom_dialog: None, section_zoom_dialog: None, summary_zoom_dialog: None, disable_autorecover_for_presentation: false, last_autorecover_at: None, autorecover_settings: None, recover_unsaved: None }
+        Self { selection: Vec::new(), tool: editing::Tool::Select, drag: None, shift: false, clipboard: Vec::new(), clipboard_groups: Vec::new(), character_format_copy: None, paragraph_format_copy: None, animation_copy: None, find: None, replace_fonts: None, section_panel: None, layout_panel: None, print_panel: None, spelling: None, #[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))] compress_panel: None, edit_points: None, path_draw: None, notes_marks_panel: None, print_settings: Default::default(), folded_sections: Default::default(), section_selection: None, size_panel: None, insets_panel: None, crop_panel: None, frame_panel: None, cell_size_panel: None, alt_text_panel: None, comments: None, chart_panel: None, chart_data: None, header_footer: None, animation_pane: false, animation_options_panel: None, selection_pane: None, reading_order_pane: None, link_panel: None, clips: Vec::new(), symbols: None, defaults: Default::default(), theme_panel: None, timing_panel: None, show_panel: None, glow_panel: None, shadow_panel: None, gradient_panel: None, paragraph_panel: None, clipboard_slide: None, pastes: 0, edit: None, positions: Default::default(), goal_x: None, pending_click: None, notes_field: None, notes_hidden: false, grid_view: false, outline_view: false, notes_page_view: false, gridlines: false, guides: false, snap_to_grid: false, snap_to_shape: false, slide_popup: None, read_only_dismissed: false, modify_unlocked: false, clipboard_stamp: None, slide_selection: Vec::new(), align_to_slide: false, properties_panel: None, inspect_panel: None, accessibility_panel: None, compatibility_panel: None, slide_zoom_dialog: None, section_zoom_dialog: None, summary_zoom_dialog: None, disable_autorecover_for_presentation: false, last_autorecover_at: None, autorecover_settings: None, recover_unsaved: None }
     }
 }
 

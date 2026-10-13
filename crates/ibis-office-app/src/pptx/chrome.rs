@@ -1437,7 +1437,7 @@ pub(crate) fn menus(editor: &SlideEditor, menus: &mut Menus) {
     menus.items_mut(MenuId::Format).push(MenuItem::tr("pptx.picture.reset-colors")
         .disabled(!editor.selected_shapes().iter().any(|s| matches!(&s.kind, ShapeKind::Picture(p) if p.duotone.is_some() || p.clear.is_some() || p.luminance.is_some())))
         .on(|e, _, cx| e.reset_picture_color_effects(cx)).into());
-    #[cfg(all(target_os = "macos", feature = "export"))]
+    #[cfg(all(feature = "export", any(target_os = "macos", target_os = "linux")))]
     menus.items_mut(MenuId::Format).push(MenuItem::tr("pptx.picture.compress").icon("image").on(|e, w, cx| e.open_compress_panel(w, cx)).into());
     menus.items_mut(MenuId::Format).push(Submenu::tr("pptx.clip.playback", "play_circle", clip_playback_items(editor)).into());
     menus.items_mut(MenuId::Format).push(Submenu::tr("pptx.video.styles", "style", video_style_items(editor, has_pic)).into());

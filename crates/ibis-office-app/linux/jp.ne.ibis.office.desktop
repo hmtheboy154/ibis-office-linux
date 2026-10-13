@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (c) ibis inc.
+# Additional terms under AGPL-3.0 section 7(b): see NOTICE.
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=ibisOffice
+GenericName=Office Suite
+GenericName[ja]=オフィススイート
+Comment=Create and edit Word, Excel and PowerPoint documents
+Comment[ja]=Word・Excel・PowerPoint の文書を作成・編集します
+Exec=ibisOffice %U
+Icon=jp.ne.ibis.office
+Terminal=false
+Categories=Office;Viewer;
+# The windows' WM_CLASS and the app id of their xdg_toplevel
+# (shell/platform.rs), which is how the desktop matches them to this entry.
+StartupWMClass=jp.ne.ibis.office
+StartupNotify=true
+SingleMainWindow=false
+MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.openxmlformats-officedocument.wordprocessingml.template;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;application/vnd.openxmlformats-officedocument.spreadsheetml.template;application/vnd.openxmlformats-officedocument.presentationml.presentation;application/vnd.openxmlformats-officedocument.presentationml.slideshow;application/vnd.openxmlformats-officedocument.presentationml.template;application/vnd.ms-word.document.macroEnabled.12;application/vnd.ms-excel.sheet.macroEnabled.12;application/vnd.ms-powerpoint.presentation.macroEnabled.12;

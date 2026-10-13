@@ -43,6 +43,7 @@ pub(crate) mod scenario_i18n;
 #[cfg(all(target_os = "macos", feature = "scenarios"))]
 pub(crate) mod scenario_menus;
 pub(crate) mod menu_bridge;
+pub(crate) mod platform;
 #[cfg(all(target_os = "macos", feature = "scenarios"))]
 pub(crate) mod scenario_fix;
 pub(crate) mod start_view;
