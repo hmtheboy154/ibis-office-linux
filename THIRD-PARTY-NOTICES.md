@@ -8,6 +8,7 @@ The complete list of components, with their licenses and the notices those licen
 
 - Web version: [www/license.md](www/license.md)
 - Desktop version (macOS): [crates/ibis-office-app/macos/license.md](crates/ibis-office-app/macos/license.md) (also included in `ibisOffice.app` under `Contents/Resources/Licenses/`)
+- Desktop version (Linux): [crates/ibis-office-app/linux/license.md](crates/ibis-office-app/linux/license.md) (also installed under `$PREFIX/share/doc/ibis-office/`)
 
 Only components under licenses that allow commercial use are included (Apache-2.0, MIT, BSD, MPL-2.0, ISC, Zlib, Unicode, CC0, BSL-1.0, 0BSD, OFL-1.1, and the ECMA-376 data under the Ecma copyright policy). Copyleft licenses such as GPL, LGPL and AGPL are not used for third-party components.
 
@@ -19,5 +20,6 @@ ibisOffice には、第三者の部品（Rust の crate、フォント、アイ�
 
 - Web 版：[www/license.md](www/license.md)
 - デスクトップ版（macOS）：[crates/ibis-office-app/macos/license.md](crates/ibis-office-app/macos/license.md)（`ibisOffice.app` の `Contents/Resources/Licenses/` にも入っています）
+- デスクトップ版（Linux）：[crates/ibis-office-app/linux/license.md](crates/ibis-office-app/linux/license.md)（`$PREFIX/share/doc/ibis-office/` にも入っています）
 
 商用で使えるライセンス（Apache-2.0、MIT、BSD、MPL-2.0、ISC、Zlib、Unicode、CC0、BSL-1.0、0BSD、OFL-1.1、および Ecma テキスト著作権ポリシーの ECMA-376 データ）の部品だけを使っています。GPL・LGPL・AGPL などのコピーレフトのライセンスは、第三者の部品には使っていません。

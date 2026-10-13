@@ -5,6 +5,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- Linux: the app builds and runs (`cargo build --release`, or `scripts/install-linux.sh`, which installs it with the desktop around it: a menu entry with its icon, the documents it opens, and an `ibisOffice` command). `scripts/bundle-linux.sh` builds it as an AppDir and, with `--appimage`, as a single-file AppImage.
+  - Windows carry the app id `jp.ne.ibis.office` (`WM_CLASS` on X11, the `xdg_toplevel` app id on Wayland), which is what the desktop matches to the app's icon and its entry.
+  - `File > Export PDF` and `--export pdf` write the pages as vectors with their fonts embedded, as on the other platforms.
+  - `--export png`, `--export pdf-image` and `File > Export PNG` / GIF are macOS and Windows only: they need a headless renderer, which is not written for the wgpu renderer the app draws with on Linux.
+  - The automatic update's files go to the directories the desktop expects (`$XDG_CACHE_HOME/jp.ne.ibis.office`, `$XDG_STATE_HOME`), not to `~/Library`.
+
 ## [0.8.1] - 2026-10-12
 
 ### Added

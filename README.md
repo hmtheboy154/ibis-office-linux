@@ -143,6 +143,22 @@ cargo build --release
 - On macOS, `scripts/bundle-macos.sh` builds the app at `target/release/ibisOffice.app`.
 - For the browser edition, build with `scripts/build-web.sh --release` and serve `www/` (browsers with WebGPU: Chrome, Edge, Safari 26 or later).
 
+### Linux
+
+`cargo build --release` builds the app for Linux as well; `target/release/ibisOffice` is a working editor. To install it with the desktop around it (a menu entry with its icon, the documents it opens, an `ibisOffice` command):
+
+```bash
+scripts/install-linux.sh                       # into /usr/local (sudo)
+scripts/install-linux.sh --prefix ~/.local    # into your own home, no sudo
+```
+
+What the desktop needs is installed under the prefix: `share/applications/jp.ne.ibis.office.desktop` (whose `StartupWMClass` is the app id the windows carry, see `crates/ibis-office-app/src/shell/platform.rs`), the hicolor icons, the document types (`share/mime`) and the AppStream data (`share/metainfo`).
+
+- Needs a Vulkan driver (the app draws with wgpu; `vulkaninfo` shows the GPU it would use) and the Wayland or X11 client libraries the compositor toolkit brings. On X11 the window gets the window manager's titlebar (the app draws its own title row inside the window).
+- The 開く… / 保存… dialogs are the desktop's own, through the XDG desktop portal (`xdg-desktop-portal`), as they are for every GTK application.
+- `scripts/bundle-linux.sh` builds the same thing as an AppDir (`target/dist/AppDir`, runnable with its `AppRun`), and with `--appimage` packs it into a single file with [appimagetool](https://github.com/AppImage/AppImageKit/releases).
+- `--export pdf` (File > Export PDF, and the command line) works on Linux: the pages are written as vectors, with the fonts embedded. `--export png` and `--export pdf-image` need the platform's headless renderer, which is written for macOS and Windows only.
+
 ## Implemented Features
 
 ### docx
